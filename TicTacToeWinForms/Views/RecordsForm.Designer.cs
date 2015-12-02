@@ -28,17 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listView1 = new System.Windows.Forms.ListView();
             this.records_reset_button = new System.Windows.Forms.Button();
+            this.records_datagridview = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.records_datagridview)).BeginInit();
             this.SuspendLayout();
-            // 
-            // listView1
-            // 
-            this.listView1.Location = new System.Drawing.Point(13, 42);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(259, 207);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
             // 
             // records_reset_button
             // 
@@ -49,22 +42,33 @@
             this.records_reset_button.Text = "Reset";
             this.records_reset_button.UseVisualStyleBackColor = true;
             // 
+            // records_datagridview
+            // 
+            this.records_datagridview.AllowUserToAddRows = false;
+            this.records_datagridview.AllowUserToDeleteRows = false;
+            this.records_datagridview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.records_datagridview.Location = new System.Drawing.Point(13, 43);
+            this.records_datagridview.Name = "records_datagridview";
+            this.records_datagridview.ReadOnly = true;
+            this.records_datagridview.Size = new System.Drawing.Size(559, 206);
+            this.records_datagridview.TabIndex = 2;
+            // 
             // RecordsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(584, 261);
+            this.Controls.Add(this.records_datagridview);
             this.Controls.Add(this.records_reset_button);
-            this.Controls.Add(this.listView1);
             this.Name = "RecordsForm";
             this.Text = "RecordsForm";
+            ((System.ComponentModel.ISupportInitialize)(this.records_datagridview)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ListView listView1;
     private System.Windows.Forms.Button records_reset_button;
-}
+        private System.Windows.Forms.DataGridView records_datagridview;
+    }
 }

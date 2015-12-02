@@ -48,6 +48,8 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\RecordsController.cs" />
+    <Compile Include="Models\GameRecord.cs" />
+    <Compile Include="Models\GameRecordsDatabaseHelper.cs" />
     <Compile Include="Views\GameForm.cs">
       <SubType>Form</SubType>
     </Compile>

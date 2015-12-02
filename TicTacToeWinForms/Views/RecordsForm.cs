@@ -10,6 +10,7 @@ namespace TicTacToeWinForms
         {
             controller = c;
             InitializeComponent();
+            records_datagridview.DataSource = controller.GetData();
         }
     }
 }

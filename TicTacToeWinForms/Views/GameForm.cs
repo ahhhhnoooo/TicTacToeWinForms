@@ -63,7 +63,7 @@ namespace TicTacToeWinForms
                 default:
                     {
                         int index = Convert.ToInt32(e.PropertyName);
-                        switch (model.Board[index])
+                        switch (model.GetBoardPosition(index))
                         {
                             case GameModel.O: boardView[index].Image = Properties.Resources.o; break;
                             case GameModel.BLANK: boardView[index].Image = Properties.Resources.blank; break;

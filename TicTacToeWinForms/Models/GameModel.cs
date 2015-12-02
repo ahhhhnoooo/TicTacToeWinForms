@@ -8,103 +8,133 @@ namespace TicTacToeWinForms
         public const int O = -1;
         public const int BLANK = 0;
 
-        public bool InProgress { private set; get; }
-        public long Duration { private set; get; }
-        public int Turn { private set; get; }
-        public int[] Board { private set; get; }
-        public int[] WinningPositions { private set; get; }
+        private bool _gameInProgress;
+        private int _turn;
+        private long _duration;
+        private int[] _board;
+        private int[] _winningPositions;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public GameModel()
         {
+            _board = new int[9];
             Reset();
         }
 
-        public void OnClickedBoard(int index)
+        /// <summary>
+        /// Duration of the game in seconds
+        /// </summary>
+        public long Duration
         {
-            if (InProgress == false) return;
-            //Ignore if spot already taken
-            if (Board[index] != 0) return;
-
-            //Set spot and notify view
-            Board[index] = Turn;
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(index.ToString()));
-
-            //Check winner
-            if (checkWinnerBoard()) return;
-
-            //Advance turn and notify view
-            if (Turn == X) Turn = O;
-            else Turn = X;
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Turn"));
-
-        }
-        public void OnTickGameTimer()
-        {
-            if (InProgress == false) return;
-            ++Duration;
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Duration"));
-        }
-
-        public void Reset()
-        {
-            //TODO First second is not full second
-            Duration = 0;
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Duration"));
-
-            Turn = X;
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Turn"));
-
-            Board = new int[9];
-            for (int i = 0; i < 9; ++i)
+            set
             {
-                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(i.ToString()));
+                if (_duration != value)
+                {
+                    _duration = value;
+                    if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Duration"));
+                }
             }
-
-            WinningPositions = null;
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Winner"));
-
-            InProgress = true;
-        }
-
-        private bool checkWinnerBoard()
-        {
-            //Check 3 rows, 3 cols, 2 diag
-            return (
-                    checkWinnerRow(0, 1, 2) ||
-                    checkWinnerRow(3, 4, 5) ||
-                    checkWinnerRow(6, 7, 8) ||
-                    checkWinnerRow(0, 3, 6) ||
-                    checkWinnerRow(1, 4, 7) ||
-                    checkWinnerRow(2, 5, 8) ||
-                    checkWinnerRow(0, 4, 8) ||
-                    checkWinnerRow(2, 4, 6)
-            );
-            //TODO If board is full with no winner
+            get
+            {
+                return _duration;
+            }
         }
 
         /// <summary>
-        /// Check if this is a winning set
+        /// Player who's turn it is
         /// </summary>
-        /// <returns>True if winner</returns>
-        private bool checkWinnerRow(int a, int b, int c)
+        public int Turn
         {
-            if (Turn == Board[a] && Turn == Board[b] && Turn == Board[c])
+            private set
             {
-                //Stop game, disables timer and board
-                InProgress = false;
-
-                WinningPositions = new int[] { a, b, c };
-
-                //Notify winner
-                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Winner"));
-
-                //Save results
-
-                return true;
+                if (_turn != value)
+                {
+                    _turn = value;
+                    if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Turn"));
+                }
             }
-            else return false;
+            get
+            {
+                return _turn;
+            }
+        }
+
+        /// <summary>
+        /// Whether a game is in progress
+        /// </summary>
+        public bool GameInProgress
+        {
+            set
+            {
+                _gameInProgress = value;
+            }
+            get
+            {
+                return _gameInProgress;
+            }
+        }
+
+        /// <summary>
+        /// The indices of the board positions that make a winning match
+        /// Null if no winner
+        /// </summary>
+        public int[] WinningPositions
+        {
+            set
+            {
+                _winningPositions = value;
+                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Winner"));
+            }
+            get
+            {
+                return _winningPositions;
+            }
+        }
+
+        public void SetBoardPosition(int index, int value)
+        {
+            //Check out of range
+            if (index >= 9) return;
+
+            if (_board[index] != value)
+            {
+                _board[index] = value;
+                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(index.ToString()));
+            }
+        }
+
+        public int GetBoardPosition(int index)
+        {
+            return _board[index];
+        }
+
+        /// <summary>
+        /// Advance turn and notify view
+        /// </summary>
+        public void NextTurn()
+        {
+            if (Turn == X) Turn = O;
+            else Turn = X;
+        }
+
+        /// <summary>
+        /// Reset the game
+        /// </summary>
+        public void Reset()
+        {
+            //TODO First second is not full second
+            for (int index = 0; index < 9; ++index)
+            {
+                _board[index] = 0;
+                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(index.ToString()));
+            }
+
+            //Use properties to trigger notification
+            Duration = 0;
+            Turn = X;
+            WinningPositions = null;
+            GameInProgress = true;
         }
     }
 }

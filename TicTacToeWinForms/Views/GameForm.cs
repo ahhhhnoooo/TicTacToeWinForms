@@ -60,6 +60,11 @@ namespace TicTacToeWinForms
                         }
                     }
                     break;
+                case "Status":
+                    {
+
+                    }
+                    break;
                 default:
                     {
                         int index = Convert.ToInt32(e.PropertyName);

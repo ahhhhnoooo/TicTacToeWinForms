@@ -8,7 +8,15 @@ namespace TicTacToeWinForms
         public const int O = -1;
         public const int BLANK = 0;
 
-        private bool _gameInProgress;
+        public enum GameStatus
+        {
+            Unknown,
+            Setup,
+            Started,
+            Ended
+        }
+
+        private GameStatus _status;
         private int _turn;
         private long _duration;
         private int[] _board;
@@ -54,25 +62,23 @@ namespace TicTacToeWinForms
                     if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Turn"));
                 }
             }
-            get
-            {
-                return _turn;
-            }
+            get { return _turn; }
         }
 
         /// <summary>
-        /// Whether a game is in progress
+        /// Status of the game
         /// </summary>
-        public bool GameInProgress
+        public GameStatus Status
         {
             set
             {
-                _gameInProgress = value;
+                if (_status != value)
+                {
+                    _status = value;
+                    if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Status"));
+                }
             }
-            get
-            {
-                return _gameInProgress;
-            }
+            get { return _status; }
         }
 
         /// <summary>
@@ -134,7 +140,7 @@ namespace TicTacToeWinForms
             Duration = 0;
             Turn = X;
             WinningPositions = null;
-            GameInProgress = true;
+            Status = GameStatus.Setup;
         }
     }
 }

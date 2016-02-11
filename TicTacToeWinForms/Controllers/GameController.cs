@@ -16,7 +16,9 @@ namespace TicTacToeWinForms
 
         public void OnClickGameBoard(int index)
         {
-            if (_model.GameInProgress == false) return;
+            //Ignore click if game ended, start game if not started
+            if (_model.Status == GameModel.GameStatus.Ended) return;
+            else if (_model.Status == GameModel.GameStatus.Setup) _model.Status = GameModel.GameStatus.Started;
 
             //Ignore if spot already taken
             if (_model.GetBoardPosition(index) != 0) return;
@@ -33,7 +35,8 @@ namespace TicTacToeWinForms
 
         public void OnTickGameTimer()
         {
-            if (_model.GameInProgress == false) return;
+            if (_model.Status == GameModel.GameStatus.Setup
+             || _model.Status == GameModel.GameStatus.Ended) return;
             ++_model.Duration;
         }
 
@@ -69,7 +72,7 @@ namespace TicTacToeWinForms
              && _model.Turn == _model.GetBoardPosition(c))
             {
                 //Stop game, disables timer and board
-                _model.GameInProgress = false;
+                _model.Status = GameModel.GameStatus.Ended;
 
                 //Notify winner
                 _model.WinningPositions = new int[] { a, b, c };
